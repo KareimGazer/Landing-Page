@@ -22,6 +22,8 @@ const navList = document.querySelector("#navbar__list");
 const main = document.querySelector("main");
 let sectionsNum = 3;//initially it's three then it's increased with more sections added
 //const sections = document.querySelectorAll("section");
+
+//pragraphs building blocks
 let p1 = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           Morbi fermentum metus faucibus lectus pharetra dapibus. 
           Suspendisse potenti. Aenean aliquam elementum mi, ac euismod augue. 
@@ -39,6 +41,14 @@ let p2 =  `Sed convallis sollicitudin mauris ac tincidunt.
  * 
 */
 
+/**
+ * no return value
+ *
+ *@param {element} sec : the section element
+ * Takes a section as a parameter and creates a list entry for it with
+ * a link in the navigation bar
+ */
+
 function appendNav(sec){
     const element = document.createElement("LI");
     const link = document.createElement("A");
@@ -49,6 +59,13 @@ function appendNav(sec){
     navList.appendChild(element);
 }
 
+
+/**
+ * NO return Value
+ *creates the list entry for every section in the page using
+ * appendNav helper function
+ */
+
 function buildNav(){
     const sections = document.querySelectorAll("section");
     for(let i=0; i<sections.length; i++){
@@ -56,13 +73,27 @@ function buildNav(){
     }
 }
 
+/**
+ * no return value
+ *
+ *@param {event} event : the event object
+ * takes the event object as a parameter and checks if a link is clicked to
+ * scroll to the desired section
+ */
+
 function scroll(event){
     if(event.target.nodeName == 'A'){
         const sec = document.querySelector("#" + event.target.getAttribute("data-dest"));
-        sec.scrollIntoView();
+        sec.scrollIntoView({"behavior": "smooth"});
     }
 }
 
+/**
+ * no return value
+ *
+ *@param {element} el : element
+ * Takes an element as a parameter and checks if it's in viewport - seen by the page viewer
+ */
 
 function ElementInViewport (el) {
 
@@ -75,6 +106,13 @@ function ElementInViewport (el) {
         rectangle.right <= (window.innerWidth || document.documentElement.clientWidth) 
     );
 }
+
+/**
+ * no return value
+ *
+ * checks the sections to see if there is a section in viewport and hence
+ * applies the appropriate css to that section
+ */
 
 function highlight(){
     const sections = document.querySelectorAll("section");
@@ -89,6 +127,11 @@ function highlight(){
     }
 }
 
+/**
+ * returns element sec
+ *
+ * creates a new section element and assigns the appropriate attributes
+ */
 
 function createSection(){
     sectionsNum++;
@@ -111,16 +154,16 @@ function createSection(){
     return sec;
 }
 
-function addSection(){
-    const sec = createSection();
-    main.appendChild(sec);
-    appendNav(sec);
-}
+/**
+ * no return value
+ *
+ * adds four new sections to the page
+ */
 
-function scrollEnd(){
-    const footer = document.querySelector(".page__footer");
-    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight && sectionsNum<7){
-        addSection();
+function addSections(){
+    for(let i=0; i<4; i++){
+        const sec = createSection();
+        main.appendChild(sec);
     }
 }
 
@@ -130,7 +173,7 @@ function scrollEnd(){
  * Begin Main Functions
  * 
 */
-
+addSections();
 
 // build the nav
 buildNav();
@@ -140,7 +183,6 @@ document.addEventListener('scroll', highlight);
 
 // Scroll to anchor ID using scrollTO event
 document.addEventListener('click', scroll);
-document.addEventListener('scroll', scrollEnd);
 /**
  * End Main Functions
  * Begin Events
